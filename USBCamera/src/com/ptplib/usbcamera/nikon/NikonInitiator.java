@@ -16,31 +16,18 @@
 //
 package com.ptplib.usbcamera.nikon;
 
-import java.io.ByteArrayInputStream;
-import java.util.ArrayList;
-import java.util.List;
-
-////import ch.ntb.usb.*;
-import android.hardware.usb.UsbConstants;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbDeviceConnection;
-import android.hardware.usb.UsbEndpoint;
-import android.hardware.usb.UsbInterface;
-import android.hardware.usb.UsbManager;
-import android.hardware.usb.UsbRequest;
 import android.util.Log;
-import android.widget.TextView;
-
 
 import com.ptplib.usbcamera.BaselineInitiator;
 import com.ptplib.usbcamera.Command;
 import com.ptplib.usbcamera.Container;
 import com.ptplib.usbcamera.Data;
 import com.ptplib.usbcamera.DevicePropDesc;
-import com.ptplib.usbcamera.NameFactory;
 import com.ptplib.usbcamera.PTPException;
-import com.ptplib.usbcamera.PTPUnsupportedException;
 import com.ptplib.usbcamera.Response;
+////import ch.ntb.usb.*;
 
 /**
  * This supports all standardized PTP-over-USB operations, including

@@ -37,34 +37,18 @@ package com.ptplib.usbcamera;
 
 
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-///http://www.koders.com/info.aspx?c=ProjectInfo&pid=UCBHEX8BYMVVNMXBWVSEQ1BH8A
-import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.util.Timer;
-import java.util.TimerTask;
 
-import com.ptplib.usbcamera.eos.EosEventConstants;
-import com.ptplib.usbcamera.eos.EosInitiator;
-import com.ptplib.usbcamera.nikon.NikonEventConstants;
-import com.ptplib.usbcamera.nikon.NikonInitiator;
-import com.strickling.usbcamera.R;
-
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.hardware.usb.UsbConstants;
 import android.hardware.usb.UsbDevice;
-import android.hardware.usb.UsbDeviceConnection;
-import android.hardware.usb.UsbEndpoint;
-import android.hardware.usb.UsbInterface;
 import android.hardware.usb.UsbManager;
-import android.hardware.usb.UsbRequest;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -73,6 +57,13 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.ptplib.usbcamera.eos.EosEventConstants;
+import com.ptplib.usbcamera.eos.EosInitiator;
+import com.ptplib.usbcamera.nikon.NikonEventConstants;
+import com.ptplib.usbcamera.nikon.NikonInitiator;
+import com.strickling.usbcamera.R;
+///http://www.koders.com/info.aspx?c=ProjectInfo&pid=UCBHEX8BYMVVNMXBWVSEQ1BH8A
 
 public class USBCameraTest extends Activity { //implements Runnable {
 
@@ -231,11 +222,13 @@ public class USBCameraTest extends Activity { //implements Runnable {
 			@Override
 			public void onClick(View v) {
 				clearTV();
-				testInfo.showInTextView(tv3);
+				if(testInfo != null){
+					testInfo.showInTextView(tv3);
+				}
 				//tv3.setText(testInfo.toString());
 				//changeSpinnerToCanon();
 				if (bi== null || bi.info == null){
-					tv2.setText ("Error, not connected");
+					tv2.setText ("Error, not connected, try to initDevice");
 					initDevice (searchDevice());
 					return;
 				}
@@ -255,7 +248,7 @@ public class USBCameraTest extends Activity { //implements Runnable {
 			@Override
 			public void onClick(View v) {
 				clearTV();
-				//changeSpinnerToNikon();
+				changeSpinnerToNikon();
 				
 				if (bi== null || bi.info == null){
 					tv2.setText ("Error, not connected");
@@ -1196,20 +1189,22 @@ public class USBCameraTest extends Activity { //implements Runnable {
 
 	// search connected devices, returns only protocol 0 devices
 	public UsbDevice searchDevice () {
-		tv1.setText("Search Device");
+		tv1.setText("Search Device...");
+//		mUsbManager = (UsbManager)getSystemService(Context.USB_SERVICE);
 		UsbDevice device = null;
 		for (UsbDevice lDevice :  mUsbManager.getDeviceList().values()) {
 //			Log.d(TAG, "Device: " +lDevice.getDeviceName() +" class " +lDevice.getDeviceClass());
 			if (lDevice.getDeviceProtocol() == 0) device = lDevice;	  
 			tv1.setText("Found Device: " +device.getDeviceName());
 		}
-		if (device == null) tv1.setText("No device found!");
+		if (device == null) tv2.setText("No device found!");
 		return device;
 	}
 
 
 	// inits device, 
 	public void initDevice (UsbDevice device) {
+		tv6.setText("initDevice, device is NULL?: " + (device==null));
 		if (device != null){
 			Log.d(TAG, "initDevice: "+device.getDeviceName());
 			//	        	log ("Device: " +device.getDeviceName());
@@ -1282,6 +1277,7 @@ public class USBCameraTest extends Activity { //implements Runnable {
 	BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
 		public void onReceive(Context context, Intent intent) {
 			Log.d(TAG, "mUsbReceiver  onReceive");
+			tv5.setText("mUsbReceiver  onReceive");
 			String action = intent.getAction();
 			UsbDevice device = (UsbDevice)intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
 			if (UsbManager.ACTION_USB_DEVICE_ATTACHED.equals(action) /*|| (device != null)*/) {

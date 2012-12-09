@@ -17,5 +17,6 @@
     <!-- vendor and product ID for EOS 600D -->
     <!-- usb-device vendor-id="1193" product-id="12824" -->
     <!-- usb-device protocol="0" / -->
+    <usb-device vendor-id="0x04b0" product-id="0x0421" />
     <usb-device class="6" subclass="1" protocol="1" />
 </resources>
